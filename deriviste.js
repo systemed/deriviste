@@ -16,15 +16,18 @@ function initialise() {
 	map = L.map('map', { doubleClickZoom: false }).setView([30,20],2);
 	var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		attribution: "<a href='http://osm.org/copyright' target='_blank'>&copy; OpenStreetMap contributors</a>",
-		maxzoom: 19 }).addTo(map);
+		maxNativeZoom: 19,
+		maxZoom: 22 }).addTo(map);
 	var bing = L.tileLayer.bing("Arzdiw4nlOJzRwOz__qailc8NiR31Tt51dN2D7cm57NrnceZnCpgOkmJhNpGoppU");
 	var esri = L.tileLayer("https://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
 		attribution: "ESRI",
-		maxzoom: 18 });
+		maxNativeZoom: 18,
+		maxZoom: 22 });
 
 	// Add Mapillary overlay
 	var mapillaryLayer = L.vectorGrid.protobuf("https://d25uarhxywzl1j.cloudfront.net/v0.1/{z}/{x}/{y}.mvt", {
 		maxNativeZoom: 20,
+		maxZoom: 22,
 		rendererFactory: L.canvas.tile,
  		vectorTileLayerStyles: {
 			'mapillary-sequences': {
@@ -49,7 +52,8 @@ function initialise() {
 
 	var mapillaryRaster = L.tileLayer('https://d6a1v2w10ny40.cloudfront.net/v0.1/{z}/{x}/{y}.png', {
 		attribution: "<a href='http://mapillary.com/' target='_blank'>&copy; Mapillary</a>",
-		maxzoom: 22 }).addTo(map);
+		maxNativeZoom: 18,
+		maxzoom: 24 }).addTo(map);
 
 	// Initialise Leaflet
 	L.Control.geocoder({ expand: 'click',  }).addTo(map);
