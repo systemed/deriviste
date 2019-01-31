@@ -46,7 +46,7 @@ function initialise() {
 	redIcon = L.icon({ iconUrl: 'images/marker_red.png', iconRetinaUrl: 'images/marker_red_2x.png',
 		shadowUrl: "images/marker-shadow.png", iconSize:[25,41], iconAnchor:[12,41],
 		popupAnchor: [1,-34], tooltipAnchor: [16,-28], shadowSize:[41,41] });
-	
+
 	// Initialise Mapillary
     mly = new Mapillary.Viewer(
         'mapillary',
@@ -55,7 +55,7 @@ function initialise() {
 	mly.on('dblclick', doubleClickMapillary);
 	mly.on('nodechanged', mapillaryMoved);
 	mly.on('bearingchanged', mapillaryRotated);
-	
+
 	// Initialise autocomplete
 	autocomplete("#aa-search-input", { autoselect: true }, [{
 		source: findPresets,
@@ -99,7 +99,7 @@ function findPresets(query,callback) {
 	callback(results);
 }
 // Format result object as string for display
-function getPresetValue(obj) { 
+function getPresetValue(obj) {
 	return obj.name;
 }
 // User has selected a preset
@@ -135,7 +135,7 @@ function doubleClickMap(event) {
 }
 function doubleClickMapillary(event) {
 	var ll = event.latLon;
-	if (ll==null) { 
+	if (ll==null) {
 		flash("Couldn't find position");
 		console.log(event);
 		return;
@@ -154,7 +154,7 @@ function createNewMarkerAt(ll) {
 // User navigated somewhere on the Mapillary viewer
 function mapillaryMoved(node) {
     var loc = node.computedLatLon ? [node.computedLatLon.lat, node.computedLatLon.lon] : [node.latLon.lat, node.latLon.lon];
-	if (beamMarker) { 
+	if (beamMarker) {
 		beamMarker.setLatLng(loc);
 	} else {
 		beamMarker = L.marker(loc, { icon: beamIcon }).addTo(map);
@@ -248,9 +248,9 @@ function startUpload() {
 	var password = u('#password').first().value;
 	if (!username || !password) return alert("You must enter an OSM username and password.");
 	var comment = prompt("Enter a changeset comment.","");
-	
+
 	// Create changeset
-	var str = '<osm><changeset><tag k="created_by" v="Deriviste" /><tag k="comment" v="" /></changeset></osm>';
+	var str = '<osm><changeset><tag k="created_by" v="Deriviste" /><tag k="imagery_used" v="Mapillary Images"><tag k="source" v="mapillary;streetlevel imagery" /><tag k="comment" v="" /></changeset></osm>';
 	xml = new DOMParser().parseFromString(str,"text/xml");
 	xml.getElementsByTagName('tag')[1].setAttribute('v', comment);
 
