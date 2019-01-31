@@ -1,16 +1,13 @@
 html,body {
-	margin: 0;
-	padding: 0;
 	font-family: Avenir Next, Avenir, Helvetica, sans-serif;
 }
 #mapillary,#introduction {
 	position: absolute;
-	top: 0;
-	left: 0;
 	right: 0;
-	height: 65%;
-	width: 100%;
-	background-color: white;
+	top: 0;
+	height: 70%;
+	width: 40%;
+	background-color: #E6E9ED;
 }
 #introduction {
 	z-index: 100;
@@ -18,24 +15,26 @@ html,body {
 #introduction .inner {
 	padding: 30px 40px 20px 40px;
 	max-width: 80%;
+	color: #356685;
 }
 #map {
 	position: absolute;
+	background-color: #AAD3DF;
 	bottom: 0;
 	left: 0;
-	height: 35%;
-	width: 50%;
+	height: 100%;
+	width: 60%;
 }
 #controls {
 	position: absolute;
 	bottom: 0;
 	right: 25%;
-	height: 35%;
-	width: 25%;
-	background-color: #DDD;
+	height: 30%;
+	width: 15%;
+	background-color: #637381;
 }
 #controls .inner {
-	padding: 15px;
+	padding: 10px;
 }
 #uploading { position: absolute; bottom: 0px; }
 #upload, #delete {
@@ -45,15 +44,24 @@ html,body {
 	letter-spacing: 1px;
 	cursor: pointer;
 }
-#upload { background-color: #22F; }
-#delete { background-color: #F22; }
+#upload {
+	background-color: #00BCFF;
+}
+#delete {
+	background-color: #E05643;
+}
 #tag_editor {
 	position: absolute;
 	bottom: 0;
 	right: 0;
-	height: 35%;
+	height: 30%;
 	width: 25%;
-	background-color: #EEE;
+	background-color: #D7DADD;
+}
+#tag {
+	margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 #tag_editor input {
 	padding: 0;
@@ -98,13 +106,13 @@ html,body {
   right: 16px;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
-  fill: #e4e4e4; 
+  fill: #e4e4e4;
 }
 .aa-dropdown-menu {
   background-color: #fff;
   border: 1px solid rgba(228, 228, 228, 0.6);
   min-width: 200px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   margin-top: -5px;
 }
 .aa-suggestion { padding: 0 12px 0 12px; cursor: pointer; }
