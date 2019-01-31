@@ -317,7 +317,7 @@ function startUpload() {
 	var comment = prompt("Enter a changeset comment.","");
 
 	// Create changeset
-	var str = '<osm><changeset><tag k="created_by" v="Deriviste" /><tag k="imagery_used" v="Mapillary Images"><tag k="source" v="mapillary;streetlevel imagery" /><tag k="comment" v="" /></changeset></osm>';
+	var str = '<osm><changeset><tag k="created_by" v="Deriviste" /><tag k="comment" v="" /></changeset><tag k="imagery_used" v="Mapillary Images"><tag k="source" v="mapillary;streetlevel imagery" /></osm>';
 	xml = new DOMParser().parseFromString(str,"text/xml");
 	xml.getElementsByTagName('tag')[1].setAttribute('v', comment);
 
