@@ -1,6 +1,8 @@
 var map, mly;						// Leaflet and Mapillary objects
 var markers = [];					// array of all new markers
+var mapillaryMarkers = [] // array of all new Mapillary markers
 var selectedMarker;					// currently selected marker
+var currentMarketId = 0;    // current Mapillary marker
 var presets;						// presets.json
 var beamIcon,beamMarker,redIcon;	// custom icons
 var clickTimer, swallowClick;		// double-click handling
@@ -11,7 +13,7 @@ var clickTimer, swallowClick;		// double-click handling
 function initialise() {
 
 	// Standard layers
-	map = L.map('map', { doubleClickZoom: false }).setView([51.9993,-0.9876],14);
+	map = L.map('map', { doubleClickZoom: false }).setView([30,20],2);
 	var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		attribution: "<a href='http://osm.org/copyright' target='_blank'>&copy; OpenStreetMap contributors</a>",
 		maxzoom: 19 }).addTo(map);
@@ -22,40 +24,74 @@ function initialise() {
 
 	// Add Mapillary overlay
 	var mapillaryLayer = L.vectorGrid.protobuf("https://d25uarhxywzl1j.cloudfront.net/v0.1/{z}/{x}/{y}.mvt", {
-		maxNativeZoom: 14,
+		maxNativeZoom: 20,
 		rendererFactory: L.canvas.tile,
  		vectorTileLayerStyles: {
 			'mapillary-sequences': {
-				weight: 15,
-				color: '#00b96f',
-				opacity: 0.5,
+				weight: 0.2,
+				color: '#05CB63',
+				opacity: 0.8,
 				fill: true
 			},
+			'mapillary-images': function(zoom) {
+				return {
+					radius: zoom/3,
+					color: '#05CB63',
+					fillColor: '#05CB63',
+					dashArray: '2, 6',
+					fillOpacity: .1,
+					opacity: 0.5,
+					fill: true
+				}
+			}
 		}
-	}).addTo(map);
+	})//.addTo(map); temporarily testing raster tile layer
+
+	var mapillaryRaster = L.tileLayer('https://d6a1v2w10ny40.cloudfront.net/v0.1/{z}/{x}/{y}.png', {
+		attribution: "<a href='http://mapillary.com/' target='_blank'>&copy; Mapillary</a>",
+		maxzoom: 22 }).addTo(map);
 
 	// Initialise Leaflet
-	L.Control.geocoder({ expand: 'click' }).addTo(map);
+	L.Control.geocoder({ expand: 'click',  }).addTo(map);
 	L.control.layers({ "OSM": osm, "Bing aerial": bing, "ESRI Clarity": esri }, { "Mapillary": mapillaryLayer }).addTo(map);
 	map.on('click', clickMap);
 	map.on('dblclick', doubleClickMap);
 
 	// Initialise icons
-	beamIcon = L.icon({ iconUrl: 'images/beam_19x32.png', iconSize: [19,32], iconAnchor: [10,26] });
+	beamIcon = L.icon({ iconUrl: 'images/location-0.png', iconSize: [48,48], iconAnchor: [24,24] });
 	var opts = Object.assign({}, L.Icon.Default.prototype.options);
 	redIcon = L.icon({ iconUrl: 'images/marker_red.png', iconRetinaUrl: 'images/marker_red_2x.png',
 		shadowUrl: "images/marker-shadow.png", iconSize:[25,41], iconAnchor:[12,41],
 		popupAnchor: [1,-34], tooltipAnchor: [16,-28], shadowSize:[41,41] });
-	
+
 	// Initialise Mapillary
-    mly = new Mapillary.Viewer(
-        'mapillary',
-        'ZXZyTWZwdkg1WFBIZ2hGVEkySlFiUTpjZWJmMWU3MTViMGMwOTY3');
-    window.addEventListener("resize", function() { mly.resize(); });
+  mly = new Mapillary.Viewer(
+      'mapillary',
+      'ZXZyTWZwdkg1WFBIZ2hGVEkySlFiUTpjZWJmMWU3MTViMGMwOTY3',
+			null,
+      {
+          component: {
+              marker: {
+                  visibleBBoxSize: 100,
+              },
+              mouse: {
+                  doubleClickZoom: false,
+              },
+          },
+      }
+	);
+	// activate hover effect
+	var hover = document.createElement("script");
+	n = 0 // marker ID count
+	hover.type = "text/javascript";
+	hover.src = "hover.js";
+	document.head.appendChild(hover);
+	mly.setRenderMode(Mapillary.RenderMode.Letterbox);
+  window.addEventListener("resize", function() { mly.resize(); });
 	mly.on('dblclick', doubleClickMapillary);
 	mly.on('nodechanged', mapillaryMoved);
 	mly.on('bearingchanged', mapillaryRotated);
-	
+
 	// Initialise autocomplete
 	autocomplete("#aa-search-input", { autoselect: true }, [{
 		source: findPresets,
@@ -99,7 +135,7 @@ function findPresets(query,callback) {
 	callback(results);
 }
 // Format result object as string for display
-function getPresetValue(obj) { 
+function getPresetValue(obj) {
 	return obj.name;
 }
 // User has selected a preset
@@ -135,7 +171,7 @@ function doubleClickMap(event) {
 }
 function doubleClickMapillary(event) {
 	var ll = event.latLon;
-	if (ll==null) { 
+	if (ll==null) {
 		flash("Couldn't find position");
 		console.log(event);
 		return;
@@ -143,18 +179,29 @@ function doubleClickMapillary(event) {
 	createNewMarkerAt([ll.lat,ll.lon]);
 }
 function createNewMarkerAt(ll) {
+	var markerComponent = mly.getComponent('marker');
+	currentMarkerId = n;
+	var mapillaryMarker = new Mapillary.MarkerComponent.SimpleMarker(
+			n,
+			{ lat: ll[0], lon: ll[1] },
+			{ interactive: true });
 	var m = L.marker(ll, { draggable: true }).addTo(map);
 	m.on('click', clickMarker);
 	markers.push(m);
+	mapillaryMarkers.push(mapillaryMarker);
+	m.id = n;
+	console.log(m.id);
 	u('#changes').html(markers.length);
 	clickMarker(m);
 	clearAutocomplete();
+	n += 1;
+	handleMapMarkerDrag(m);
 }
 
 // User navigated somewhere on the Mapillary viewer
 function mapillaryMoved(node) {
     var loc = node.computedLatLon ? [node.computedLatLon.lat, node.computedLatLon.lon] : [node.latLon.lat, node.latLon.lon];
-	if (beamMarker) { 
+	if (beamMarker) {
 		beamMarker.setLatLng(loc);
 	} else {
 		beamMarker = L.marker(loc, { icon: beamIcon }).addTo(map);
@@ -171,12 +218,16 @@ function mapillaryRotated(angle) {
 // (open the tag table editor, plus a delete button)
 function clickMarker(e) {
 	deselectCurrentMarker();
+	var markerComponent = mly.getComponent('marker');
 	var marker = e.target || e;
 	marker.options.tags = marker.options.tags || {};
 	populateTagsTable(marker.options.tags);
 	clearAutocomplete();
 	selectedMarker = marker;
 	marker.setIcon(redIcon);
+	markerId = marker.id;
+	currentMarkerId = markerId;
+	markerComponent.add([mapillaryMarkers[currentMarkerId]]);
 }
 
 // Deselect currently selected marker
@@ -185,6 +236,8 @@ function deselectCurrentMarker() {
 	applyTags();
 	selectedMarker.setIcon(L.Icon.Default.prototype);
 	selectedMarker = null;
+	currentMarkerId = null;
+	markerComponent.removeAll();
 }
 
 // Delete currently selected marker
@@ -197,6 +250,13 @@ function deleteCurrentMarker() {
 	populateTagsTable({});
 	u('#changes').html(markers.length);
 	clearAutocomplete();
+	var markerComponent = mly.getComponent('marker');
+	try {
+		markerComponent.remove(currentMarkerId);
+		currentMarkerId = null;
+	} catch(e) {
+		// do nothing
+	}
 }
 
 // Delete all markers
@@ -208,6 +268,9 @@ function deleteAllMarkers() {
 	populateTagsTable({});
 	u('#changes').html(0);
 	clearAutocomplete();
+	var markerComponent = mly.getComponent('marker');
+	markerComponent.remove(currentMarkerId);
+	currentMarkerId = null;
 }
 
 // Take tags (e.g. from currently selected marker) and populate table with them
@@ -248,7 +311,7 @@ function startUpload() {
 	var password = u('#password').first().value;
 	if (!username || !password) return alert("You must enter an OSM username and password.");
 	var comment = prompt("Enter a changeset comment.","");
-	
+
 	// Create changeset
 	var str = '<osm><changeset><tag k="created_by" v="Deriviste" /><tag k="comment" v="" /></changeset></osm>';
 	xml = new DOMParser().parseFromString(str,"text/xml");
