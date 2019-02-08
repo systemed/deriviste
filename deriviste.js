@@ -103,6 +103,13 @@ function initialise() {
 		displayKey: getPresetValue
 	}]).on('autocomplete:selected', choosePreset);
 	fetch("presets/presets.json").then(parsePresets);
+
+    // Check we can access Mapillary, in case you're being fancy with browser
+    // extensions that block things.
+    // Is there a mapillary "ping" API URL to use instead?
+    fetch("https://a.mapillary.com/v3/").catch(response => {
+        u("#introduction .inner").append("<p>⚠  Your browser is blocking access to Mapillary, which is needed for Deriviste. Check your browser extensions or adblockers. (PrivacyBadger/uBlock/etc.)</p>");
+    });
 }
 
 function flash(str) {
