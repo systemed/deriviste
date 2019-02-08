@@ -14,8 +14,8 @@ function initialise() {
 
 	// Standard layers
 	map = L.map('map', { doubleClickZoom: false }).setView([30,20],2);
-	var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: "<a href='http://osm.org/copyright' target='_blank'>&copy; OpenStreetMap contributors</a>",
+	var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: "<a href='https://osm.org/copyright' target='_blank'>&copy; OpenStreetMap contributors</a>",
 		maxNativeZoom: 19,
 		maxZoom: 22 }).addTo(map);
 	var bing = L.tileLayer.bing("Arzdiw4nlOJzRwOz__qailc8NiR31Tt51dN2D7cm57NrnceZnCpgOkmJhNpGoppU");
@@ -51,7 +51,7 @@ function initialise() {
 	})//.addTo(map); temporarily testing raster tile layer
 
 	var mapillaryRaster = L.tileLayer('https://d6a1v2w10ny40.cloudfront.net/v0.1/{z}/{x}/{y}.png', {
-		attribution: "<a href='http://mapillary.com/' target='_blank'>&copy; Mapillary</a>",
+		attribution: "<a href='https://mapillary.com/' target='_blank'>&copy; Mapillary</a>",
 		maxNativeZoom: 18,
 		maxzoom: 24 }).addTo(map);
 
