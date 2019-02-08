@@ -69,7 +69,7 @@ function initialise() {
 		popupAnchor: [1,-34], tooltipAnchor: [16,-28], shadowSize:[41,41] });
 
 	// Initialise Mapillary
-  mly = new Mapillary.Viewer(
+    mly = new Mapillary.Viewer(
       'mapillary',
       'ZXZyTWZwdkg1WFBIZ2hGVEkySlFiUTpjZWJmMWU3MTViMGMwOTY3',
 			null,
@@ -91,7 +91,7 @@ function initialise() {
 	hover.src = "hover.js";
 	document.head.appendChild(hover);
 	mly.setRenderMode(Mapillary.RenderMode.Letterbox);
-  window.addEventListener("resize", function() { mly.resize(); });
+    window.addEventListener("resize", function() { mly.resize(); });
 	mly.on('dblclick', doubleClickMapillary);
 	mly.on('nodechanged', mapillaryMoved);
 	mly.on('bearingchanged', mapillaryRotated);
