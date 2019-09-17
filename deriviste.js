@@ -196,6 +196,7 @@ function createNewMarkerAt(ll) {
 	m.id = n;
 	console.log(m.id);
 	u('#changes').html(markers.length);
+	document.getElementById("upload").disabled = false;
 	clickMarker(m);
 	clearAutocomplete();
 	n += 1;
@@ -232,6 +233,7 @@ function clickMarker(e) {
 	markerId = marker.id;
 	currentMarkerId = markerId;
 	markerComponent.add([mapillaryMarkers[currentMarkerId]]);
+	document.getElementById("delete").disabled = false;
 }
 
 // Deselect currently selected marker
@@ -242,6 +244,7 @@ function deselectCurrentMarker() {
 	selectedMarker = null;
 	currentMarkerId = null;
 	markerComponent.removeAll();
+	document.getElementById("delete").disabled = true;
 }
 
 // Delete currently selected marker
@@ -253,6 +256,9 @@ function deleteCurrentMarker() {
 	markers.splice(idx,1);
 	populateTagsTable({});
 	u('#changes').html(markers.length);
+	if(markers.length == 0) {
+		document.getElementById("upload").disabled = true;
+	}
 	clearAutocomplete();
 	var markerComponent = mly.getComponent('marker');
 	try {
@@ -271,6 +277,7 @@ function deleteAllMarkers() {
 	markers = [];
 	populateTagsTable({});
 	u('#changes').html(0);
+	document.getElementById("upload").disabled = true;
 	clearAutocomplete();
 	var markerComponent = mly.getComponent('marker');
 	markerComponent.remove(currentMarkerId);
