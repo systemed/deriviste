@@ -36,7 +36,9 @@ html,body {
 #controls .inner {
 	padding: 10px;
 }
+#username { margin-bottom: 3px; }
 #uploading { position: absolute; bottom: 0px; }
+#credentials-container { margin-bottom: 10px; }
 #upload, #delete {
 	padding: 8px;
 	color: white;
@@ -49,6 +51,14 @@ html,body {
 }
 #delete {
 	background-color: #E05643;
+}
+#upload:disabled {
+	color: #a6a6a6;
+	background-color: #0084B3;
+}
+#delete:disabled {
+	color: #a6a6a6;
+	background-color: #B8311E;
 }
 #tag_editor {
 	position: absolute;
@@ -85,7 +95,7 @@ html,body {
 
 /* Autocomplete */
 
-.aa-input-container {  display: inline-block;  position: relative; }
+.aa-input-container {  display: inline-block;  position: relative; margin-bottom: 10px;}
 .aa-input-search {
   min-width: 200px;
   border: 1px solid rgba(228, 228, 228, 0.6);
