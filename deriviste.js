@@ -324,7 +324,7 @@ function startUpload() {
 	fetch("https://www.openstreetmap.org/api/0.6/changeset/create", {
 		method: "PUT",
 	    headers: { "Content-Type": "text/xml",
-		           "Authorization": "Basic " + window.btoa(username + ":" + password) },
+		           "Authorization": "Basic " + window.btoa(unescape(encodeURIComponent(username + ":" + password))) },
 		body: new XMLSerializer().serializeToString(xml)
 	}).then(response => {
 		response.text().then(text => {
@@ -367,7 +367,7 @@ function uploadData(changesetId) {
 	fetch("https://www.openstreetmap.org/api/0.6/changeset/"+changesetId+"/upload", {
 		method: "POST",
 	    headers: { "Content-Type": "text/xml",
-		           "Authorization": "Basic " + window.btoa(u('#username').first().value + ":" + u('#password').first().value) },
+		           "Authorization": "Basic " + window.btoa(unescape(encodeURIComponent(u('#username').first().value + ":" + u('#password').first().value))) },
 		body: new XMLSerializer().serializeToString(xml)
 	}).then(response => {
 		response.text().then(text => {
