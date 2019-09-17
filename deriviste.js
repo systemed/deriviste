@@ -26,26 +26,23 @@ function initialise() {
 
 	// Add Mapillary overlay
 	var mapillaryLayer = L.vectorGrid.protobuf("https://d25uarhxywzl1j.cloudfront.net/v0.1/{z}/{x}/{y}.mvt", {
-		maxNativeZoom: 20,
+		maxNativeZoom: 14,
 		maxZoom: 22,
 		rendererFactory: L.canvas.tile,
  		vectorTileLayerStyles: {
 			'mapillary-sequences': {
-				weight: 0.2,
+				weight: 1,
 				color: '#05CB63',
-				opacity: 0.8,
-				fill: true
+				fillOpacity: 0,
+				dashArray: '2, 6'
 			},
-			'mapillary-images': function(zoom) {
-				return {
-					radius: zoom/3,
-					color: '#05CB63',
-					fillColor: '#05CB63',
-					dashArray: '2, 6',
-					fillOpacity: .1,
-					opacity: 0.5,
-					fill: true
-				}
+			'mapillary-images': {
+				radius: .3,
+				color: '#05CB63',
+				fillColor: '#05CB63',
+				fillOpacity: .1,
+				opacity: 0.5,
+				fill: true
 			}
 		}
 	})//.addTo(map); temporarily testing raster tile layer
@@ -57,7 +54,7 @@ function initialise() {
 
 	// Initialise Leaflet
 	L.Control.geocoder({ expand: 'click',  }).addTo(map);
-	L.control.layers({ "OSM": osm, "Bing aerial": bing, "ESRI Clarity": esri }, { "Mapillary": mapillaryLayer }).addTo(map);
+	L.control.layers({ "OSM": osm, "Bing aerial": bing, "ESRI Clarity": esri }, { "Mapillary": mapillaryRaster }).addTo(map);
 	map.on('click', clickMap);
 	map.on('dblclick', doubleClickMap);
 
