@@ -1,11 +1,11 @@
-var map, mly;						// Leaflet and Mapillary objects
-var markers = [];					// array of all new markers
-var mapillaryMarkers = [] // array of all new Mapillary markers
-var selectedMarker;					// currently selected marker
-var currentMarketId = 0;    // current Mapillary marker
-var presets;						// presets.json
-var beamIcon,beamMarker,redIcon;	// custom icons
-var clickTimer, swallowClick;		// double-click handling
+var map, mly;                     // Leaflet and Mapillary objects
+var markers = [];                 // array of all new markers
+var mapillaryMarkers = []         // array of all new Mapillary markers
+var selectedMarker;               // currently selected marker
+var currentMarketId = 0;          // current Mapillary marker
+var presets;                      // presets.json
+var beamIcon,beamMarker,redIcon;  // custom icons
+var clickTimer, swallowClick;     // double-click handling
 
 // =========================================================================
 // Initialise the app
@@ -53,7 +53,7 @@ function initialise() {
 		maxzoom: 24 }).addTo(map);
 
 	// Initialise Leaflet
-	L.Control.geocoder({ expand: 'click',  }).addTo(map);
+	L.Control.geocoder({ expand: 'click', }).addTo(map);
 	L.control.layers({ "OSM": osm, "Bing aerial": bing, "ESRI Clarity": esri }, { "Mapillary": mapillaryRaster }).addTo(map);
 	map.on('click', clickMap);
 	map.on('dblclick', doubleClickMap);
@@ -66,20 +66,20 @@ function initialise() {
 		popupAnchor: [1,-34], tooltipAnchor: [16,-28], shadowSize:[41,41] });
 
 	// Initialise Mapillary
-    mly = new Mapillary.Viewer(
-      'mapillary',
-      'ZXZyTWZwdkg1WFBIZ2hGVEkySlFiUTpjZWJmMWU3MTViMGMwOTY3',
-			null,
-      {
-          component: {
-              marker: {
-                  visibleBBoxSize: 100,
-              },
-              mouse: {
-                  doubleClickZoom: false,
-              },
-          },
-      }
+	mly = new Mapillary.Viewer(
+		'mapillary',
+		'ZXZyTWZwdkg1WFBIZ2hGVEkySlFiUTpjZWJmMWU3MTViMGMwOTY3',
+		null,
+		{
+			component: {
+				marker: {
+					visibleBBoxSize: 100,
+				},
+				mouse: {
+					doubleClickZoom: false,
+				},
+			},
+		}
 	);
 	// activate hover effect
 	var hover = document.createElement("script");
@@ -88,7 +88,7 @@ function initialise() {
 	hover.src = "hover.js";
 	document.head.appendChild(hover);
 	mly.setRenderMode(Mapillary.RenderMode.Letterbox);
-    window.addEventListener("resize", function() { mly.resize(); });
+	window.addEventListener("resize", function() { mly.resize(); });
 	mly.on('dblclick', doubleClickMapillary);
 	mly.on('nodechanged', mapillaryMoved);
 	mly.on('bearingchanged', mapillaryRotated);
@@ -202,7 +202,7 @@ function createNewMarkerAt(ll) {
 
 // User navigated somewhere on the Mapillary viewer
 function mapillaryMoved(node) {
-    var loc = node.computedLatLon ? [node.computedLatLon.lat, node.computedLatLon.lon] : [node.latLon.lat, node.latLon.lon];
+	var loc = node.computedLatLon ? [node.computedLatLon.lat, node.computedLatLon.lon] : [node.latLon.lat, node.latLon.lon];
 	if (beamMarker) {
 		beamMarker.setLatLng(loc);
 	} else {
@@ -327,7 +327,7 @@ function startUpload() {
 
 	fetch("https://www.openstreetmap.org/api/0.6/changeset/create", {
 		method: "PUT",
-	    headers: { "Content-Type": "text/xml",
+		headers: { "Content-Type": "text/xml",
 		           "Authorization": "Basic " + window.btoa(unescape(encodeURIComponent(username + ":" + password))) },
 		body: new XMLSerializer().serializeToString(xml)
 	}).then(response => {
@@ -370,13 +370,13 @@ function uploadData(changesetId) {
 	// Upload
 	fetch("https://www.openstreetmap.org/api/0.6/changeset/"+changesetId+"/upload", {
 		method: "POST",
-	    headers: { "Content-Type": "text/xml",
+		headers: { "Content-Type": "text/xml",
 		           "Authorization": "Basic " + window.btoa(unescape(encodeURIComponent(u('#username').first().value + ":" + u('#password').first().value))) },
 		body: new XMLSerializer().serializeToString(xml)
 	}).then(response => {
 		response.text().then(text => {
 			// we could probably parse the diff result here and keep the markers around
-			//   for editing (with new id/version), but for now, let's just delete them
+			// for editing (with new id/version), but for now, let's just delete them
 			flash("Nodes uploaded.");
 			console.log(text);
 			deleteAllMarkers();
