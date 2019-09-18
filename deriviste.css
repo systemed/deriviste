@@ -11,6 +11,7 @@ html,body {
 }
 #introduction {
 	z-index: 100;
+	overflow: scroll;
 }
 #introduction .inner {
 	padding: 30px 40px 20px 40px;
