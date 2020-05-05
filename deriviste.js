@@ -65,6 +65,15 @@ function initialise() {
 		shadowUrl: "images/marker-shadow.png", iconSize:[25,41], iconAnchor:[12,41],
 		popupAnchor: [1,-34], tooltipAnchor: [16,-28], shadowSize:[41,41] });
 
+	//Initialise start position
+	var hash = new L.Hash(map);
+	const url = location.href;
+	const match = url.match(/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+	if (match){
+		const [, zoom, lat, lon] = match;
+		map.setView([lat, lon], zoom);
+	}
+
 	// Initialise Mapillary
     mly = new Mapillary.Viewer(
       'mapillary',
