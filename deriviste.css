@@ -1,7 +1,7 @@
-html,body {
+html, body {
 	font-family: Avenir Next, Avenir, Helvetica, sans-serif;
 }
-#mapillary,#introduction {
+#mapillary, #introduction {
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -71,8 +71,8 @@ html,body {
 }
 #tag {
 	margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+	margin-right: auto;
+	text-align: center;
 }
 #tag_editor input {
 	padding: 0;
@@ -84,7 +84,7 @@ html,body {
 	width: 300px;
 	height: 50px;
 	margin: auto;
-    top: 0; left: 0; bottom: 0; right: 0;
+	top: 0; left: 0; bottom: 0; right: 0;
 	background-color: #3F3;
 	color: black;
 	font-size: 1.3em;
@@ -96,37 +96,37 @@ html,body {
 
 /* Autocomplete */
 
-.aa-input-container {  display: inline-block;  position: relative; margin-bottom: 10px;}
+.aa-input-container { display: inline-block; position: relative; margin-bottom: 10px; }
 .aa-input-search {
-  min-width: 200px;
-  border: 1px solid rgba(228, 228, 228, 0.6);
-  padding: 12px 28px 12px 12px;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+	min-width: 200px;
+	border: 1px solid rgba(228, 228, 228, 0.6);
+	padding: 12px 28px 12px 12px;
+	box-sizing: border-box;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 }
 .aa-input-search::-webkit-search-decoration, .aa-input-search::-webkit-search-cancel-button, .aa-input-search::-webkit-search-results-button, .aa-input-search::-webkit-search-results-decoration {
-    display: none;
+	display: none;
 }
 .aa-input-icon {
-  height: 16px;
-  width: 16px;
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  fill: #e4e4e4;
+	height: 16px;
+	width: 16px;
+	position: absolute;
+	top: 50%;
+	right: 16px;
+	-webkit-transform: translateY(-50%);
+	        transform: translateY(-50%);
+	fill: #e4e4e4;
 }
 .aa-dropdown-menu {
-  background-color: #fff;
-  border: 1px solid rgba(228, 228, 228, 0.6);
-  min-width: 200px;
-  box-sizing: border-box;
-  margin-top: -5px;
+	background-color: #fff;
+	border: 1px solid rgba(228, 228, 228, 0.6);
+	min-width: 200px;
+	box-sizing: border-box;
+	margin-top: -5px;
 }
 .aa-suggestion { padding: 0 12px 0 12px; cursor: pointer; }
 .aa-suggestion * { margin: 0 !important; }
-.aa-suggestion + .aa-suggestion {  border-top: 1px solid rgba(228, 228, 228, 0.6); }
+.aa-suggestion + .aa-suggestion { border-top: 1px solid rgba(228, 228, 228, 0.6); }
 .aa-suggestion:hover, .aa-suggestion.aa-cursor { background-color: rgba(0, 241, 241, 0.35); }
